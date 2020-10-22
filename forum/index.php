@@ -15,8 +15,8 @@ $templates = [
 (isset($_POST["template"]) && $_POST["template"]) ? $_POST["template"] : "";
 
 require_once("../smarty/libs/Smarty.class.php");
-define("HOST", "127.0.0.1");
-define("USER", "www-data");
+define("HOST", "");
+define("USER", "");
 define("PWD", "");
 define("DB_NAME", "forum");
 
