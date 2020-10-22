@@ -1,0 +1,51 @@
+html:root{
+  margin: 0;
+  padding: 0;
+  height:100%;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 75%;
+  align-items: center;
+}
+
+
+.form{
+  display: flex;
+  flex-direction: column;
+  line-height: 3em;
+  justify-content: center;
+  width: 30%;
+  align-items: stretch;
+  overflow: auto;
+}
+
+.form *{
+  padding: 5px;
+}
+
+
+/*container parent*/
+.input{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+}
+
+/*item child*/
+.input input{
+  border: none;
+  border-bottom: solid 2px black;
+}
+
+/*container parent*/
+.buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv=“pragma“ content=“no-cache“>
+  <meta http-equiv=“expires“ content=“0″>
+  <link rel="stylesheet" href="include/css/style_h.css" type="text/css" >
+  <script src="include/js/ajax.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function(){init_home()})</script>
+  <title>Home</title>
+</head>
+<body>
+  <nav>
+    <ul><div class="personalinfo">
+      <!--{$personalinfo}-->
+    </div></ul>
+    <ul> <form action="index.php" method="post"> <button>Logout</button> </form></ul>
+  </nav>
+
+  <div class="feed" id="feed">
+      <!--{$posts}-->
+  </div>
+
+  <div class="display">
+    <p>USER: <span id="user"><!--{$user}--></span></p>
+    <p>characters left:<span id="characters_left"></span></p>
+    <textarea id="textarea" rows="10"></textarea>
+    <p></p>
+    <button type="button" id="submit_post">submit</button>
+    <p></p>
+    <button type="button" id="refresh">refresh</button>
+  </div>
+
+  <div id="change_password">
+
+  </div>
+
+</body>
+</html>

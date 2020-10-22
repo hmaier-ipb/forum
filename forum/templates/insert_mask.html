@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="include/css/style_im.css">
+  <script src="include/js/ajax.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function(){init_insert_mask()})</script>
+  <title>insert mask</title>
+</head>
+<body>
+  <div class="input">
+    <span>City</span><input id="city" name="city" placeholder="Enter City" autocomplete="off" >
+    <span>Postal code</span><input id="postalcode" name="postalcode" placeholder="Enter Postal Code" autocomplete="off" >
+    <span>Street Name</span><input id="streetname" name="streetname" placeholder="Enter Streetname" autocomplete="off" >
+  <button id="insert" name="insert">insert</button><br>
+  </div>
+
+  <div class="output">
+    <span id="output_city"></span><br>
+    <span id="output_postalcode"></span><br>
+    <span id="output_streetname"></span><br>
+    <span id="output_insert"></span>
+  </div>
+</body>
+</html>

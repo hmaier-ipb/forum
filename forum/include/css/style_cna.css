@@ -1,0 +1,33 @@
+html:root{
+  width: 100%;
+  height: 100%;
+  line-height: 2em;
+}
+body{
+ display: flex;
+ justify-content: center;
+
+}
+
+.cna_container{
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  line-height: 2em;
+  justify-content: center;
+
+}
+
+
+input{
+  box-sizing: border-box;
+  width: 100%;
+  border: none;
+  border-bottom: solid 2px black;
+}
+
+img{
+  width: 1em;
+  height: 1em;
+}
+
