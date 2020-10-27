@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv=“pragma“ content=“no-cache“>
@@ -14,13 +13,13 @@
 <body>
     <form class="form" action="index.php" method="post" >
       <div class="input">
-        <span>Username</span><input id="user" placeholder="username" name="user">
-        <span>Password</span><input id="pwd" type="password"  placeholder="password" name="pwd">
+        <span>Username</span><input value="hadmin" id="user" placeholder="username" name="user" autocomplete="off">
+        <span>Password</span><input value="pwd1" id="pwd" type="password"  placeholder="password" name="pwd" autocomplete="off">
       </div>
       <div class="buttons">
         <button id="submit_login" name="template" value="home">Login existing Account</button>
         <button id="submit_create" name="template" value="create">Create new Account</button>
-        <button id="submit_forgot" name="template" value="">Forgot Password</button>
+        <button id="submit_forgot" name="template" value="forgot">Forgot Password</button>
       </div>
     </form>
     <div class="display">

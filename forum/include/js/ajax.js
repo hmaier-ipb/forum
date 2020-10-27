@@ -57,23 +57,22 @@ var img_streetnum;
 var img_username;
 var img_password;
 var img_passwordr;
+var time_span;
+var seconds;
+var minutes;
+var hours;
+var logout;
+var email;
+var submit_email;
+var email_check;
+var sec_display;
+var personalinfo_button;
+var personalinfo_div;
+var changepassword_button;
+var changepassword_div1;
+var changepassword_div2;
 
 
-
-
-
-function init_insert_mask() {
-  city = $("city");
-  postalcode = $("postalcode");
-  streetname = $("streetname");
-  output_city = $("output_city")
-  output_postalcode = $("output_postalcode");
-  output_streetname = $("output_streetname");
-  output_insert = $("output_insert");
-  error_message = $("error_message");
-  insert = $("insert");
-  initEventlisteners_insertmask();
-}
 
 function init_create_new_acc(){
   //button
@@ -105,7 +104,6 @@ function init_create_new_acc(){
   img_passwordr = $("passwordr_check");
   initEventListeners_create();
 }
-
 function initEventListeners_create(){
 
   //checking name
@@ -218,15 +216,14 @@ function initEventListeners_create(){
   })
 
 }
-
-function init_login(){
+/*function init_login(){
   user = $("user");
   pwd = $("pwd");
   submit_login = $("submit_login");
   submit_create = $("submit_create");
   submit_forgot = $("submit_forgot");
 
-}
+}*/
 function init_home(){
   post_button = $("submit_post");
   refresh = $("refresh");
@@ -236,6 +233,36 @@ function init_home(){
   characters_left.innerHTML = chars_left;
   feed = $("feed");
   user = $("user");
+  time_span  = $("time_logged_in");
+  time_span.innerHTML = "[Hours: 0 Minutes: 0 Seconds: 0]";
+  logout = $("logout");
+  personalinfo_button = $("personalinfo_button");
+  personalinfo_div = $("personalinfo_div");
+  changepassword_button = $("changepassword_button");
+  changepassword_div1 = $("changepassword_div1");
+  changepassword_div2 = $("changepassword_div2");
+  //counting the time logged in
+  function time_logged_in() {
+
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    function mytimer(){
+      seconds += 1;
+      if (seconds === 59) {
+        seconds = 0;
+        minutes += 1;
+        if (minutes >= 60 && seconds >= 0){
+          minutes = 0;
+          hours += 1;
+        }
+      }
+
+      time_span.innerHTML = "[Hours: "+hours+" Minutes: " + minutes + " Seconds: " + seconds + "]";
+    }
+    var t = window.setInterval(mytimer, 1000);
+  }
+  time_logged_in();
   initEventListeners_home();
 }
 function initEventListeners_home(){
@@ -268,6 +295,18 @@ function initEventListeners_home(){
     characters_left.innerHTML = chars_left;
 
   })
+  personalinfo_button.addEventListener("click", function (){
+    personalinfo_div.style.display = "flex";
+    //hide change password divs
+    changepassword_div1.style.display = "none";
+    changepassword_div2.style.display = "none";
+  })
+  changepassword_button.addEventListener("click", function (){
+    changepassword_div1.style.display = "flex";
+    //hide personalinfo div
+    personalinfo_div.style.display ="none";
+  })
+
 }
 
 function initEventlisteners_insertmask() {
@@ -317,6 +356,18 @@ function initEventlisteners_insertmask() {
     })
 }
 
+function init_insert_mask() {
+  city = $("city");
+  postalcode = $("postalcode");
+  streetname = $("streetname");
+  output_city = $("output_city")
+  output_postalcode = $("output_postalcode");
+  output_streetname = $("output_streetname");
+  output_insert = $("output_insert");
+  error_message = $("error_message");
+  insert = $("insert");
+  initEventlisteners_insertmask();
+}
 function check_insert_input_field(){
   //city input (no numbers, just letters, whitespaces and -)
   checked_input = true;
@@ -339,6 +390,32 @@ function check_insert_input_field(){
     checked_input = false;
   }
   return checked_input;
+}
+
+function init_forgot(){
+  email = $("email");
+  submit_email = $("submit_email");
+  email_check = $("email_check");
+  sec_display = $("sec_display");
+  initEventListeners_forgot();
+}
+function initEventListeners_forgot(){
+  email.addEventListener("keydown", function (){
+    var pattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    var reg = new RegExp(pattern);
+    if(reg.test(email.value)) {
+      email_check.src = "/forum/include/media/green_check.png"
+    }else{
+      email_check.src = "/forum/include/media/red_check.png"
+    }
+  })
+  email.addEventListener("keyup", function (){
+    action = "forgot_email_check";
+    params = "action="+action+"&email_check="+email.value;
+    console.log(params);
+    send_info(params);
+    console.log(params);
+  })
 }
 
 function getAjaxObject() {
@@ -412,7 +489,15 @@ function setOutput() {
           //console.log();
           action = "";
           break;
-
+        case "forgot_email_check":
+          if (json_response === "existing"){
+            output_message = "Your email exists in our system.";
+          }else{
+            output_message = "Your email doesn't exists in our system.";
+          }
+          sec_display.innerHTML = output_message;
+          action = "";
+          break;
         default:
            console.log("Keine gültige Aktion");
       }

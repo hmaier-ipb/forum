@@ -12,29 +12,47 @@
   <title>Home</title>
 </head>
 <body>
-  <nav>
-    <ul><div class="personalinfo">
+
+  <nav class="nav">
+    <div class="options_menu">
+      <button id="personalinfo_button">Personal Information</button>
+      <button id="changepassword_button">Change Password</button>
+    </div>
+
+    <div class="div_container">
+
+    <div id="personalinfo_div" style="display: none;">
       <!--{$personalinfo}-->
-    </div></ul>
-    <ul> <form action="index.php" method="post"> <button>Logout</button> </form></ul>
+    </div>
+
+    <div id="changepassword_div1" style="display: none;">
+      <span>Enter current Password <input id="current_password"></span>
+    </div>
+
+    <div id="changepassword_div2" style="display: none;">
+      <span>Enter new Password <input id="new_password"></span>
+    </div>
+
+    </div>
+
   </nav>
 
   <div class="feed" id="feed">
       <!--{$posts}-->
+      <!-- Format: [".DATUM."] ".NAME.": ".MESSAGE."-->
   </div>
 
   <div class="display">
-    <p>USER: <span id="user"><!--{$user}--></span></p>
-    <p>characters left:<span id="characters_left"></span></p>
-    <textarea id="textarea" rows="10"></textarea>
-    <p></p>
-    <button type="button" id="submit_post">submit</button>
-    <p></p>
-    <button type="button" id="refresh">refresh</button>
-  </div>
-
-  <div id="change_password">
-
+    <div>
+      <div id="user">USER:<!--{$user}--><form action="index.php" method="post"><button>logout</button></form></div>
+      <div id="time_logged_in">[Hours: 0 Minutes: 0 Seconds: 0]</div>
+    </div>
+    <p>[characters left:<span id="characters_left"></span>]</p>
+    <textarea id="textarea" rows="3"></textarea>
+    <div class="display_buttons">
+      <button type="button" id="submit_post">submit</button>
+      <button type="button" id="refresh">refresh</button>
+    </div>
   </div>
 
 </body>

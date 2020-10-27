@@ -2,6 +2,7 @@
 function errl($var){
   error_log(json_encode($var));
 }
+
 session_start();
 //$_POST["template"] = isset($_POST["template"]) && $_POST["template"] ? $_POST["template"] : "";
 
@@ -9,14 +10,17 @@ $templates = [
   "login" => "login_template.html",
   "create" => "create_new_account_template.html",
   "home" => "home_template.html",
+  "forgot" => "forgot_password.html",
   "insert_mask" => "insert_mask.html"
 ];
 
 (isset($_POST["template"]) && $_POST["template"]) ? $_POST["template"] : "";
+(isset($_SESSION["user"]) && $_SESSION["user"]) ? $_SESSION["user"] : "";
+(isset($_POST["user"]) && $_POST["user"]) ? $_POST["user"] : "";
 
 require_once("../smarty/libs/Smarty.class.php");
-define("HOST", "");
-define("USER", "");
+define("HOST", "127.0.0.1");
+define("USER", "www-data");
 define("PWD", "");
 define("DB_NAME", "forum");
 
@@ -154,7 +158,7 @@ function submit_post(){
   $message = mysqli_real_escape_string($connect,$_POST["message"]);
   set_autoinc();
   $user = $_SESSION["user"];
-  errl($_POST["user"]);
+
   date_default_timezone_set("Europe/Berlin");
   $timestamp = time();
   $date = date('d/m/Y H:i:s',$timestamp);
@@ -166,7 +170,7 @@ function load_posts(){
   $out = "";
 
   while($array = mysqli_fetch_row($message_table)){
-      $out .= "<p>[".$array[2]."] ".$array[1].":".$array[0]."</p>";
+      $out .= "<p> <span>[".$array[2]."] ".$array[1].": </span><span> ".$array[0]."</span></p>";
   }
   return $out;
 }
@@ -240,8 +244,15 @@ function create_new_account(){
 
 }
 
+function send_email(){
+  $receiver = $_POST["email"];
+  
+}
+
 //handles EventListeners which sending info with AJAX
 //main if statement: checking for event listeners
+//"exit;" wird benötigt damit php nicht in if (isset($_POST["template"])) springt
+
 if (isset($_POST["action"])) {
   switch ($_POST["action"]) {
     case "postalcode":
@@ -268,6 +279,10 @@ if (isset($_POST["action"])) {
       submit_post();
       $posts = load_posts();
       print(json_encode($posts));
+      exit;
+    case "forgot_email_check":
+      $forgot_email_check_result = check_database_for_entry("email_check","user","email");
+      print(json_encode($forgot_email_check_result));
       exit;
     default:
       print json_encode("Keine gültige Aktion!");
@@ -370,20 +385,18 @@ if (isset($_POST["template"])){
       $user_result = check_database_for_entry("user","user","username");
       $pwd_result = check_database_for_entry("pwd","user","password");
       if($user_result[0] === "existing" && $pwd_result[0] === "existing") {
+        $_SESSION["user"] = $_POST["user"];
         $vars = ["display"=>"Loggin in.",
           "user"=>$_POST["user"],
           "personalinfo"=>load_personalinfo(),
           "posts"=>load_posts()
         ];
         loadSmarty($templates["home"], $vars);
-
-        $_SESSION["user"] = $_POST["user"];
         unset($_POST["template"]);
       }else{
         loadSmarty($templates["login"], $vars = ["display"=>"Username or Password not existing"]);
         unset($_POST["template"]);
       }
-
       break;
     case "new_account_created":
       $regex = new_acc_regex();
@@ -399,8 +412,26 @@ if (isset($_POST["template"])){
         unset($_POST["template"]);
       }
       break;
+    case "forgot":
+      loadSmarty($templates["forgot"], $vars=["display" => "Enter your email address to recieve a generated password."]);
+      break;
+    case "submit_forgot":
+      $email = $_POST["email"];
+      $count = 0;
+      $pattern = "/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/";
+      $forgot_email_check_result = check_database_for_entry("email","user","email");
+      if (preg_match($pattern,$email)){
+        $count += 1;
+      }
+      if ($count >=1 && $forgot_email_check_result[0] == "existing") {
+        send_email();
+        loadSmarty($templates["login"], $vars = ["display" => "Email with a new password has been send."]);
+      }else{
+        loadSmarty($templates["forgot"], $vars=["display" => "Either your input is invalid or your email doesn't exist in our system."]);
+      }
+      break;
     default:
-      print json_encode("Kein gültiges Template!");
+      print json_encode("Kein gueltiges Template!");
   }
 }else{
   loadSmarty($templates["login"], $vars=["display"=>""]);
